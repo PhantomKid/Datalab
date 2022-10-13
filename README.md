@@ -325,7 +325,7 @@ int logicalShift(int x, int n) {
 int satMul2(int x) {
   int a = x << 1;
   int b = x >> 31;  // 最高位
-  int c = a >> 31;  // 最低位
+  int c = a >> 31;  // 次高位
   int d = b^c; // 若溢出得-1，若不溢出得0
   int tmin = 1 << 31;
   int t = (tmin^c^a)&d;

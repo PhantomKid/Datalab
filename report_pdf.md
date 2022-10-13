@@ -20,7 +20,7 @@
 </p>
 
 因此最终的结果为
-```
+```c
 int bitXor(int x, int y) {
   return ~(x&y)&(~(~x&~y));
 }
