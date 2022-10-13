@@ -20,7 +20,7 @@
 </p>
 
 因此最终的结果为
-```
+```c
 int bitXor(int x, int y) {
   return ~(x&y)&(~(~x&~y));
 }
@@ -90,7 +90,7 @@ int isTmax(int x) {
 ```c
 int fitsBits(int x, int n) {
     int y = x >> n+31;
-    // if in a project x >> (n+~0) would be better
+    // if in a project y = x >> (n+~0) would be better
     return !(y^(y>>1));
 }
 ```
@@ -183,21 +183,21 @@ int absVal(int x) {
 思路：对于正数和负数，直接右移1位，得到的都是该数除2的下取整（即5>>2 = 2, -5>>2 = -3），然而本题要求是向0取整，故负数的情况需要向上取整（不能简单地认为是加1，因为可能出现整除的情况）。最直接的想法是设一个变量来判断一个数是否即是负数又不能被$2^n$整除，即最高位为1且最低的n位均为0。
 ```c
 int divpwr2(int x, int n) {
-    // 若x为负数，则low_n_one为低n位全为1
-    int p = x >> 31;
-    int low_n_one = (p << n) ^ p;
-    // 若x低n位有1则不能被2的n次方整除，需要加1
-    int addOne = !!(low_n_one & x);
-    return (x >> n) + addOne;
+  // 若x为负数，则low_n_one为低n位全为1
+  int p = x >> 31;
+  int low_n_one = (p << n) ^ p;
+  // 若x低n位有1则不能被2的n次方整除，需要加1
+  int addOne = !!(low_n_one & x);
+  return (x >> n) + addOne;
 }
 ```
 这种方法从思维上最直接但是花费的运算符个数较多，经过优化后，可以这样写。
 ```c
 int divpwr2(int x, int n) {
-    int p = x >> 31;
-    int low_n_one = (p << n) ^ p;
-    return (x + low_n_one) >> n;
-    // 若x为需要加1的情况，则x+low_n_one后第n+1位会加1。右移n位后，第n+1位上加的1就相当于对(x>>n)加1。
+  int p = x >> 31;
+  int low_n_one = (p << n) ^ p;
+  return (x + low_n_one) >> n;
+  // 若x为需要加1的情况，则x+low_n_one后第n+1位会加1。右移n位后，第n+1位上加的1就相当于对(x>>n)加1。
 }
 ```
 
